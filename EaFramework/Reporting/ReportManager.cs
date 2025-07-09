@@ -25,7 +25,8 @@ namespace EaFramework.Reporting
             //_reportPath = $"{AppDomain.CurrentDomain.BaseDirectory}TestReport.html";
             //Console.WriteLine(_reportPath);
 
-            var reportDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestResults");
+            //var reportDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestResults");
+            var reportDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResults");
             Directory.CreateDirectory(reportDir); // bezpieczne - nie rzuca wyjątku, jeśli już istnieje
 
             _reportPath = Path.Combine(reportDir, "TestReport.html");
@@ -39,7 +40,7 @@ namespace EaFramework.Reporting
             _extent = new ExtentReports();
             _extent.AttachReporter(_htmlReporter);
 
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => _extent.Flush();
+            //AppDomain.CurrentDomain.ProcessExit += (s, e) => _extent.Flush();
         }
 
         public ExtentReports GetExtent()
@@ -55,5 +56,10 @@ namespace EaFramework.Reporting
         public void Log(string message) => _currentTest?.Info(message);
         public void Pass(string message) => _currentTest?.Pass(message);
         public void Fail(string message) => _currentTest?.Fail(message);
+
+        public void Dispose()
+        {
+            _extent.Flush(); // <-- kluczowy punkt zapisu raportu
+        }
     }
 }
