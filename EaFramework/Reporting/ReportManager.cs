@@ -26,8 +26,8 @@ namespace EaFramework.Reporting
             //Console.WriteLine(_reportPath);
 
             //var reportDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestResults");
-            var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../.."));
-            var reportDir = Path.Combine(projectRoot, "TestResults");
+
+            var reportDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestResults");
             Directory.CreateDirectory(reportDir); // bezpieczne - nie rzuca wyjątku, jeśli już istnieje
 
             _reportPath = Path.Combine(reportDir, "TestReport.html");
