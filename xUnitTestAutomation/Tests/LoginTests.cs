@@ -67,7 +67,6 @@ namespace xUnitTestAutomation.Tests
                 productsPage.AddProductToCart(productName);
                 productsPage.GoToCart();
                 cartPage.VerifyIfItemIsAddedToCart().Should().BeTrue();
-                Thread.Sleep(3000);
 
                 _reportManager.Pass("Test completed successfully");
             }
