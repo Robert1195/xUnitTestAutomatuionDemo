@@ -1,10 +1,11 @@
 ﻿using xUnitTestAutomation.Pages;
 using EaFramework.Reporting;
+using FluentAssertions;
 
 namespace xUnitTestAutomation.Tests
 {
     [Collection("SharedReport")]
-    public class LoginTests(IHomePage homePage, IProductsPage productsPage, SharedReportFixture fixture)
+    public class LoginTests(IHomePage homePage, IProductsPage productsPage, ICartPage cartPage, SharedReportFixture fixture)
     {
         private readonly IReportManager _reportManager = fixture.ReportManager;
 
@@ -17,7 +18,7 @@ namespace xUnitTestAutomation.Tests
             try
             {
                 homePage.Login(username, password);
-                productsPage.IsShopingCartDisplayed();
+                productsPage.IsShopingCartDisplayed().Should().BeTrue();
 
                 _reportManager.Pass("Test completed successfully");
             }
@@ -43,6 +44,30 @@ namespace xUnitTestAutomation.Tests
                     Assert.True(homePage.isErrorMsgDisplayed(), "Error message is not displayed.");
                     Assert.True(homePage.VerifyErrorMsgTxt(), "Error message text is incorrect.");
                 });
+
+                _reportManager.Pass("Test completed successfully");
+            }
+            catch (Exception ex)
+            {
+                _reportManager.Fail("Test failed");
+                Assert.Fail(ex.ToString());
+            }
+
+        }
+
+        [Theory]
+        [InlineData("standard_user", "secret_sauce", "sauce-labs-backpack")]
+        public void Test3(string username, string password, string productName)
+        {
+            _reportManager.StartTest("Test3", "Verify if item has been added to the cart");
+
+            try
+            {
+                homePage.Login(username, password);
+                productsPage.AddProductToCart(productName);
+                productsPage.GoToCart();
+                cartPage.VerifyIfItemIsAddedToCart().Should().BeTrue();
+                Thread.Sleep(3000);
 
                 _reportManager.Pass("Test completed successfully");
             }

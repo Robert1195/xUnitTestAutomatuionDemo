@@ -16,7 +16,8 @@ namespace xUnitTestAutomation
                 .AddScoped<IDriverFixture, DriverFixture>()
                 .AddScoped<IDriverWait, DriverWait>()
                 .AddScoped<IHomePage, HomePage>()
-                .AddScoped<IProductsPage, ProductsPage>();
+                .AddScoped<IProductsPage, ProductsPage>()
+                .AddScoped<ICartPage, CartPage>();
         }
     }
 }
